@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WannaCry Ransomware Simulator (2017)</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background: #000; color: #fff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        /* Contenedor Principal de WannaCry */
+        .wannacry-window { width: 850px; background: #820000; border: 4px solid #ad0000; display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        
+        /* Encabezado */
+        .header { background: #ad0000; padding: 10px 15px; font-weight: bold; font-size: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #5a0000; }
+        
+        /* Contenido Dividido en Columnas */
+        .main-content { display: flex; padding: 15px; background: #820000; }
+        
+        /* Columna Izquierda: Temporizadores y Pago */
+        .left-panel { width: 35%; background: #5a0000; padding: 15px; border-radius: 4px; display: flex; flex-direction: column; gap: 15px; border: 1px solid #ad0000; }
+        .timer-box { background: #2a0000; border: 1px solid #ad0000; padding: 10px; border-radius: 4px; text-align: center; }
+        .timer-title { font-size: 12px; color: #ffc107; font-weight: bold; margin-bottom: 5px; }
+        .countdown { font-size: 20px; font-family: monospace; color: #fff; font-weight: bold; }
+        
+        /* Columna Derecha: El texto del rescate */
+        .right-panel { width: 65%; background: #fff; color: #000; margin-left: 15px; padding: 20px; border-radius: 4px; height: 420px; overflow-y: auto; font-size: 13px; line-height: 1.5; }
+        .right-panel h3 { color: #820000; margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        
+        /* Sección Inferior de Pago */
+        .footer-panel { padding: 15px; background: #5a0000; border-top: 2px solid #ad0000; display: flex; justify-content: space-between; align-items: center; }
+        .btc-address-container { display: flex; align-items: center; background: #fff; color: #000; padding: 8px 12px; border-radius: 4px; width: 65%; font-size: 12px; font-family: monospace; }
+        .btn-action { background: #007bff; border: none; color: white; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .btn-action:hover { background: #0056b3; }
+        
+        /* Botón de Activación Inicial */
+        .trigger-btn { background: #dc3545; color: white; border: none; padding: 20px 40px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 5px #a71d2a; transition: 0.2s; }
+        .trigger-btn:active { transform: translateY(3px); box-shadow: 0 2px #a71d2a; }
+    </style>
+</head>
+<body>
+
+    <!-- Botón de ejecución para simular el doble clic en el virus ejecutable -->
+    <button class="trigger-btn" id="start-btn" onclick="infectSystem()">RUN WANNACRY.EXE</button>
+
+    <!-- La interfaz del virus (Oculta al inicio) -->
+    <div class="wannacry-window" id="virus-window" style="display: none;">
+        <div class="header">
+            <span>Wana Decrypt0r 2.0</span>
+            <span style="cursor:pointer;" onclick="alert('Access Denied. Files are encrypted.')">❌</span>
+        </div>
+        
+        <div class="main-content">
+            <!-- Izquierda: Contadores fatídicos -->
+            <div class="left-panel">
+                <div style="text-align: center; font-size: 45px;">🔒</div>
+                
+                <div class="timer-box">
+                    <div class="timer-title">Ooops, your files have been encrypted!</div>
+                    <div style="font-size: 11px; color: #ddd; margin-bottom: 5px;">What Happened to My Computer?</div>
+                </div>
+
+                <div class="timer-box">
+                    <div class="timer-title">Payment will be raised on</div>
+                    <div class="countdown" id="raise-timer">02:23:59:59</div>
+                </div>
+
+                <div class="timer-box">
+                    <div class="timer-title">Files will be lost on</div>
+                    <div class="countdown" id="lost-timer">06:23:59:59</div>
+                </div>
+            </div>
+            
+            <!-- Derecha: El manifiesto del Ransomware -->
+            <div class="right-panel">
+                <h3>What Happened to My Computer?</h3>
+                <p>Your important files are encrypted. Many of your documents, photos, videos, databases and other files are no longer accessible because they have been encrypted. Maybe you are busy looking for a way to recover your files, but do not waste your time. Nobody can recover your files without our decryption service.</p>
+                
+                <h3>Can I Recover My Files?</h3>
+                <p>Sure. We guarantee that you can recover all your files safely and easily. But you have not so enough time. You can decrypt some files for free. Try now by clicking &lt;Decrypt&gt;. But if you want to decrypt all your files, you need to pay. You only have 3 days to submit the payment. After that the price will be doubled.</p>
+                
+                <h3>How Do I Pay?</h3>
+                <p>Payment is accepted in Bitcoin only. For more information, click &lt;About bitcoin&gt;. Please check the current price of Bitcoin and buy some bitcoins. And send the correct amount to the address specified in this window.</p>
+            </div>
+        </div>
+        
+        <!-- Abajo: Dirección de billetera Bitcoin simulada -->
+        <div class="footer-panel">
+            <div class="btc-address-container">
+                <b style="color: #ad0000; margin-right: 10px;">Send \$300 worth of bitcoin to this address:</b>
+                <span>12t9YDPgwueZ9NyMgw519p7AA8isjr6SMw</span>
+            </div>
+            <button class="btn-action" onclick="alert('Simulated Bitcoin Network Connection Failed.')">Check Payment</button>
+            <button class="btn-action" style="background:#28a745;" onclick="alert('Decryption failed. Payment not found.')">Decrypt</button>
+        </div>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Sonido de error crítico clásico de Windows
+        function playWindowsErrorSound() {
+            // Primer tono bajo
+            playBeep(150, 0.15, 'sawtooth', 0.15);
+            // Segundo tono discordante instantáneo
+            setTimeout(() => playBeep(120, 0.3, 'sawtooth', 0.2), 80);
+        }
+
+        function playBeep(frequency, duration, type, volume) {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = type;
+            oscillator.frequency.value = frequency;
+            gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + duration);
+        }
+
+        function infectSystem() {
+            if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+            
+            // Oculta el botón de inicio y despliega WannaCry
+            document.getElementById('start-btn').style.display = 'none';
+            document.getElementById('virus-window').style.display = 'flex';
+            
+            // Lanza el sonido de alerta trágica
+            playWindowsErrorSound();
+            
+            // Inicia las cuentas regresivas dinámicas reales
+            startFakeCountdown("raise-timer", 259200); // 3 días en segundos
+            startFakeCountdown("lost-timer", 604800);  // 7 días en segundos
+        }
+
+        function startFakeCountdown(elementId, totalSeconds) {
+            const element = document.getElementById(elementId);
+            setInterval(() => {
+                if (totalSeconds <= 0) return;
+                totalSeconds--;
+                
+                const days = Math.floor(totalSeconds / 86400);
+                const hours = Math.floor((totalSeconds % 86400) / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                
+                element.innerText = 
+                    `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
